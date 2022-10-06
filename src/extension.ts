@@ -20,8 +20,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 		panel.webview.onDidReceiveMessage(message => {
 			const { command, requestId, payload } = message;
-
-			console.log('Received message', command, requestId, payload);
 		
 			if (command === "GET_DATA") {
 				// Do something with the payload
@@ -31,6 +29,12 @@ export function activate(context: vscode.ExtensionContext) {
 					command,
 					requestId, // The requestId is used to identify the response
 					payload: `Hello from the extension!`
+				} as MessageHandlerData<string>);
+			} else if (command === "GET_DATA_ERROR" ) {
+				panel.webview.postMessage({
+					command,
+					requestId, // The requestId is used to identify the response
+					error: `Oops, something went wrong!`
 				} as MessageHandlerData<string>);
 			} else if (command === "POST_DATA") {
 				vscode.window.showInformationMessage(`Received data from the webview: ${payload.msg}`);

@@ -6,6 +6,7 @@ export interface IAppProps {}
 
 export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChildren<IAppProps>) => {
   const [message, setMessage] = React.useState<string>("");
+  const [error, setError] = React.useState<string>("");
 
   const sendMessage = () => {
     messageHandler.send('POST_DATA', { msg: 'Hello from the webview' });
@@ -14,6 +15,16 @@ export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChil
   const requestData = () => {
     messageHandler.request<string>('GET_DATA').then((msg) => {
       setMessage(msg);
+    });
+  };
+
+  const requestWithErrorData = () => {
+    messageHandler.request<string>('GET_DATA_ERROR')
+    .then((msg) => {
+      setMessage(msg);
+    })
+    .catch((err) => {
+      setError(err);
     });
   };
 
@@ -29,9 +40,15 @@ export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChil
         <button onClick={requestData}>
           Get data from extension
         </button>
+
+        <button onClick={requestWithErrorData}>
+          Get data with error
+        </button>
       </div>
 
       {message && <p><strong>Message from the extension</strong>: {message}</p>}
+
+      {error && <p className='app__error'><strong>ERROR</strong>: {error}</p>}
     </div>
   );
 };

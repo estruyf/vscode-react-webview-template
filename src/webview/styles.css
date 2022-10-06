@@ -12,3 +12,7 @@ h1 {
   display: flex;
   gap: 1rem;
 }
+
+.app__error {
+  color: var(--vscode-editorError-foreground);
+}
