@@ -14,4 +14,8 @@ if (elm) {
 }
 
 // Webpack HMR
-if ((module as any).hot) (module as any).hot.accept();
+// @ts-expect-error
+if (import.meta.webpackHot) {
+  // @ts-expect-error
+  import.meta.webpackHot.accept()
+}
