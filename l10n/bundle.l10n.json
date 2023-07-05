@@ -1,0 +1,6 @@
+{
+  "Hello from the extension!": "Hello from the extension!",
+  "Oops, something went wrong!": "Oops, something went wrong!",
+  "Received data from the webview {0}": "Received data from the webview {0}",
+  "Your extension got activated with the {0} language!": "Your extension got activated with the {0} language!"
+}

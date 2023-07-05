@@ -2,7 +2,7 @@ import * as React from 'react';
 import { messageHandler } from '@estruyf/vscode/dist/client';
 import "./styles.css";
 
-export interface IAppProps {}
+export interface IAppProps { }
 
 export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChildren<IAppProps>) => {
   const [message, setMessage] = React.useState<string>("");
@@ -20,12 +20,12 @@ export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChil
 
   const requestWithErrorData = () => {
     messageHandler.request<string>('GET_DATA_ERROR')
-    .then((msg) => {
-      setMessage(msg);
-    })
-    .catch((err) => {
-      setError(err);
-    });
+      .then((msg) => {
+        setMessage(msg);
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
 
   return (
