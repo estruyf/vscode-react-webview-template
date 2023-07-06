@@ -4,6 +4,7 @@ import { join } from "path";
 import * as vscode from "vscode";
 import { ExtensionContext, ExtensionMode, Uri, Webview } from "vscode";
 import { MessageHandlerData } from "@estruyf/vscode";
+import { readFile } from "fs/promises";
 
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand(
@@ -11,7 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
     () => {
       const panel = vscode.window.createWebviewPanel(
         "react-webview",
-        "React Webview",
+        vscode.l10n.t("React Webview"),
         vscode.ViewColumn.One,
         {
           enableScripts: true,
@@ -42,6 +43,23 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.window.showInformationMessage(
               vscode.l10n.t("Received data from the webview {0}", payload.msg)
             );
+          } else if (command === "GET_LOCALIZATION") {
+            if (vscode.l10n.uri?.fsPath) {
+              readFile(vscode.l10n.uri?.fsPath, "utf-8").then((fileContent) => {
+                panel.webview.postMessage({
+                  command,
+                  requestId, // The requestId is used to identify the response
+                  payload: fileContent,
+                } as MessageHandlerData<string>);
+              });
+            } else {
+              // No localization file means we should use the default language
+              panel.webview.postMessage({
+                command,
+                requestId, // The requestId is used to identify the response
+                payload: undefined,
+              } as MessageHandlerData<undefined>);
+            }
           }
         },
         undefined,

@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { messageHandler } from '@estruyf/vscode/dist/client';
 import "./styles.css";
+import * as l10n from '@vscode/l10n'
 
 export interface IAppProps { }
 
 export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChildren<IAppProps>) => {
   const [message, setMessage] = React.useState<string>("");
   const [error, setError] = React.useState<string>("");
+  const [ready, setIsReady] = React.useState<boolean>(false);
 
   const sendMessage = () => {
     messageHandler.send('POST_DATA', { msg: 'Hello from the webview' });
@@ -28,27 +30,47 @@ export const App: React.FunctionComponent<IAppProps> = ({ }: React.PropsWithChil
       });
   };
 
+  React.useEffect(() => {
+    messageHandler.request<string | undefined>('GET_LOCALIZATION')
+      .then((fileContents) => {
+        if (fileContents) {
+          l10n.config({
+            contents: fileContents
+          })
+
+          setIsReady(true);
+        }
+      }).catch((err) => {
+        // On error, we can still continue with the default language
+        setIsReady(true);
+      });
+  }, []);
+
+  if (!ready) {
+    return <div className='app'>"Loading..."</div>;
+  }
+
   return (
     <div className='app'>
-      <h1>Hello from the React Webview Starter</h1>
+      <h1>{l10n.t("Hello from the React Webview Starter")}</h1>
 
       <div className='app__actions'>
         <button onClick={sendMessage}>
-          Send message to extension
+          {l10n.t("Send message to extension")}
         </button>
 
         <button onClick={requestData}>
-          Get data from extension
+          {l10n.t("Get data from extension")}
         </button>
 
         <button onClick={requestWithErrorData}>
-          Get data with error
+          {l10n.t("Get data from extension with error")}
         </button>
       </div>
 
-      {message && <p><strong>Message from the extension</strong>: {message}</p>}
+      {message && <p><strong>{l10n.t("Message from the extension")}</strong>: {message}</p>}
 
-      {error && <p className='app__error'><strong>ERROR</strong>: {error}</p>}
+      {error && <p className='app__error'><strong>{l10n.t("ERROR")}</strong>: {error}</p>}
     </div>
   );
 };

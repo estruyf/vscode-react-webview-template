@@ -2,5 +2,12 @@
   "Hello from the extension!": "Hello from the extension!",
   "Oops, something went wrong!": "Oops, something went wrong!",
   "Received data from the webview {0}": "Received data from the webview {0}",
-  "Your extension got activated with the {0} language!": "Your extension got activated with the {0} language!"
+  "Your extension got activated with the {0} language!": "Your extension got activated with the {0} language!",
+  "Hello from the React Webview Starter": "Hello from the React Webview Starter",
+  "React Webview": "React Webview",
+  "Send message to extension": "Send message to extension",
+  "Get data from extension": "Get data from extension",
+  "Get data from extension with error": "Get data from extension with error",
+  "Message from the extension": "Message from the extension",
+  "ERROR": "ERROR"
 }
