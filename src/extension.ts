@@ -75,7 +75,7 @@ const getWebviewContent = (context: ExtensionContext, webview: Webview) => {
 	<body>
 		<div id="root"></div>
 
-		<script src="${scriptUrl}" />
+		<script src="${scriptUrl}"></script>
 	</body>
 	</html>`;
 }
