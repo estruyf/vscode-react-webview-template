@@ -3,6 +3,7 @@
 'use strict';
 
 const path = require('path');
+const WebpackManifestPlugin = require('webpack-manifest-plugin').WebpackManifestPlugin;
 
 const config = [
   {
@@ -10,8 +11,8 @@ const config = [
     target: 'web',
     entry: './src/webview/index.tsx',
     output: {
-      filename: 'webview.js',
-      path: path.resolve(__dirname, '../dist')
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, '../dist/webview')
     },
     devtool: 'source-map',
     resolve: {
@@ -35,7 +36,7 @@ const config = [
     performance: {
       hints: false
     },
-    plugins: [],
+    plugins: [new WebpackManifestPlugin({ publicPath: "" })],
     devServer: {
       compress: true,
       port: 9000,
@@ -54,6 +55,12 @@ module.exports = (env, argv) => {
 
     if (argv.mode === 'production') {
       configItem.devtool = "hidden-source-map";
+
+      configItem.optimization = {
+        splitChunks: {
+          chunks: 'all',
+        },
+      };
     }
   }
 
